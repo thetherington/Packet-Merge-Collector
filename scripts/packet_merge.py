@@ -135,9 +135,8 @@ class PacketMergeCollector:
         decoders = host_decoders[host]
 
         results = self.fetch(host)
-        # print(results)
-        # from response import params
 
+        # from response import params
         # results = params
 
         try:
@@ -184,6 +183,7 @@ class PacketMergeCollector:
         except Exception as e:
             pass
 
+    @property
     def collect(self):
 
         collection = {}
@@ -198,7 +198,7 @@ class PacketMergeCollector:
         for y in threads:
             y.join()
 
-        print(json.dumps(collection, indent=1))
+        return collection
 
 
 def main():
@@ -207,13 +207,17 @@ def main():
 
     collector = PacketMergeCollector(**params)
 
-    # print(json.dumps(collector.parameters, indent=1))
+    documents = []
 
-    # print(collector.fetch(collector.hosts[-1]))
+    for host, decoders in collector.collect.items():
 
-    # collector.parse_results(collector.hosts[-1])
+        for _, params in decoders.items():
 
-    collector.collect()
+            document = {"fields": params, "host": host, "name": "merged"}
+
+            documents.append(document)
+
+    print(json.dumps(documents, indent=1))
 
 
 if __name__ == "__main__":
