@@ -1,0 +1,259 @@
+{
+    "meta": {
+        "name": "MPPM Dashboard",
+        "desc": "Sample Dashboards for using the MPPM Collection",
+        "tags": [],
+        "version": "1",
+        "options": {},
+        "screenshots": [],
+        "date": {
+            "created_date": 1614782347002
+        }
+    },
+    "kibana_objects": [
+        {
+            "_type": "visualization",
+            "_id": "d7329f00-7b93-11eb-ab2e-ab1200471ef5",
+            "_source": {
+                "title": "Arena Decoder MPPM",
+                "visState": "{\"title\":\"Arena Decoder MPPM\",\"type\":\"table\",\"params\":{\"perPage\":100,\"showPartialRows\":false,\"showMeticsAtAllLevels\":false,\"sort\":{\"columnIndex\":null,\"direction\":null},\"showTotal\":false,\"totalFunc\":\"sum\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"top_hits\",\"schema\":\"metric\",\"params\":{\"field\":\"poller.packetmerge.merged.s_link_select\",\"aggregate\":\"concat\",\"size\":1,\"sortField\":\"@timestamp\",\"sortOrder\":\"desc\",\"customLabel\":\"Link Config\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"annotation.general.device_name.keyword\",\"size\":500,\"order\":\"asc\",\"orderBy\":\"_term\",\"customLabel\":\"Scorpion\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"top_hits\",\"schema\":\"metric\",\"params\":{\"field\":\"poller.packetmerge.merged.s_playout_status\",\"aggregate\":\"concat\",\"size\":1,\"sortField\":\"@timestamp\",\"sortOrder\":\"desc\",\"customLabel\":\"Playout Status\"}},{\"id\":\"4\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"poller.packetmerge.merged.i_decoder\",\"size\":5,\"order\":\"asc\",\"orderBy\":\"_term\",\"customLabel\":\"Decoder\"}},{\"id\":\"5\",\"enabled\":true,\"type\":\"top_hits\",\"schema\":\"metric\",\"params\":{\"field\":\"poller.packetmerge.merged.l_main_packet_rate\",\"aggregate\":\"average\",\"size\":1,\"sortField\":\"@timestamp\",\"sortOrder\":\"desc\",\"customLabel\":\"Main Rate\"}},{\"id\":\"6\",\"enabled\":true,\"type\":\"top_hits\",\"schema\":\"metric\",\"params\":{\"field\":\"poller.packetmerge.merged.l_backup_packet_rate\",\"aggregate\":\"average\",\"size\":1,\"sortField\":\"@timestamp\",\"sortOrder\":\"desc\",\"customLabel\":\"Backup Rate\"}},{\"id\":\"7\",\"enabled\":true,\"type\":\"top_hits\",\"schema\":\"metric\",\"params\":{\"field\":\"Metrics\",\"aggregate\":\"concat\",\"size\":1,\"sortField\":\"@timestamp\",\"sortOrder\":\"desc\",\"customLabel\":\"Metrics\"}}],\"listeners\":{}}",
+                "uiStateJSON": "{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}}",
+                "description": "",
+                "version": 1,
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"index\":\"log-metric-poller-packetmerge-*\",\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"filter\":[{\"meta\":{\"index\":\"log-metric-poller-packetmerge-*\",\"negate\":false,\"disabled\":false,\"alias\":null,\"type\":\"phrase\",\"key\":\"annotation.general.device_type.keyword\",\"value\":\"SCORPION-X18-APP-J2K-8E2D\"},\"query\":{\"match\":{\"annotation.general.device_type.keyword\":{\"query\":\"SCORPION-X18-APP-J2K-8E2D\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}]}"
+                }
+            }
+        },
+        {
+            "_type": "visualization",
+            "_id": "18bab720-7b97-11eb-ab2e-ab1200471ef5",
+            "_source": {
+                "title": "Main Decoder Count",
+                "visState": "{\"title\":\"Main Decoder Count\",\"type\":\"metrics\",\"params\":{\"id\":\"e0054f40-7b95-11eb-ab2e-ab1200471ef5\",\"type\":\"metric\",\"series\":[{\"id\":\"e0054f41-7b95-11eb-ab2e-ab1200471ef5\",\"color\":\"#68BC00\",\"split_mode\":\"terms\",\"metrics\":[{\"id\":\"31d97da0-7b96-11eb-ab2e-ab1200471ef5\",\"type\":\"cardinality\",\"field\":\"annotation.general.device_name.keyword\"},{\"id\":\"47c0ca60-7b96-11eb-ab2e-ab1200471ef5\",\"type\":\"series_agg\",\"function\":\"sum\"}],\"seperate_axis\":0,\"axis_position\":\"right\",\"formatter\":\"number\",\"chart_type\":\"line\",\"line_width\":1,\"point_size\":1,\"fill\":0.5,\"stacked\":\"none\",\"terms_field\":\"poller.packetmerge.merged.i_decoder\",\"terms_size\":\"2000\",\"label\":\"Decoders Main\"}],\"time_field\":\"@timestamp\",\"index_pattern\":\"log-metric-poller-packetmerge-*\",\"interval\":\"2m\",\"axis_position\":\"left\",\"axis_formatter\":\"number\",\"show_legend\":1,\"background_color_rules\":[{\"id\":\"f55739d0-7b95-11eb-ab2e-ab1200471ef5\"}],\"filter\":\"annotation.general.device_type:\\\"SCORPION-X18-APP-J2K-8E2D\\\" AND poller.packetmerge.merged.s_playout_status:Main\",\"ignore_global_filter\":1},\"aggs\":[],\"listeners\":{}}",
+                "uiStateJSON": "{}",
+                "description": "",
+                "version": 1,
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"query\":{\"query_string\":{\"query\":\"*\"}},\"filter\":[]}"
+                }
+            }
+        },
+        {
+            "_type": "visualization",
+            "_id": "05a15770-7b97-11eb-ab2e-ab1200471ef5",
+            "_source": {
+                "title": "Backup Decoder Count",
+                "visState": "{\"title\":\"Backup Decoder Count\",\"type\":\"metrics\",\"params\":{\"id\":\"e0054f40-7b95-11eb-ab2e-ab1200471ef5\",\"type\":\"metric\",\"series\":[{\"id\":\"e0054f41-7b95-11eb-ab2e-ab1200471ef5\",\"color\":\"#68BC00\",\"split_mode\":\"terms\",\"metrics\":[{\"id\":\"31d97da0-7b96-11eb-ab2e-ab1200471ef5\",\"type\":\"cardinality\",\"field\":\"annotation.general.device_name.keyword\"},{\"id\":\"47c0ca60-7b96-11eb-ab2e-ab1200471ef5\",\"type\":\"series_agg\",\"function\":\"sum\"}],\"seperate_axis\":0,\"axis_position\":\"right\",\"formatter\":\"number\",\"chart_type\":\"line\",\"line_width\":1,\"point_size\":1,\"fill\":0.5,\"stacked\":\"none\",\"terms_field\":\"poller.packetmerge.merged.i_decoder\",\"terms_size\":\"2000\",\"label\":\"Decoders Backup\"}],\"time_field\":\"@timestamp\",\"index_pattern\":\"log-metric-poller-packetmerge-*\",\"interval\":\"2m\",\"axis_position\":\"left\",\"axis_formatter\":\"number\",\"show_legend\":1,\"background_color_rules\":[{\"id\":\"f55739d0-7b95-11eb-ab2e-ab1200471ef5\"}],\"filter\":\"annotation.general.device_type:\\\"SCORPION-X18-APP-J2K-8E2D\\\" AND poller.packetmerge.merged.s_playout_status:Backup\",\"ignore_global_filter\":1},\"aggs\":[],\"listeners\":{}}",
+                "uiStateJSON": "{}",
+                "description": "",
+                "version": 1,
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"query\":{\"query_string\":{\"query\":\"*\"}},\"filter\":[]}"
+                }
+            }
+        },
+        {
+            "_type": "visualization",
+            "_id": "dada2660-7b97-11eb-837a-ff64fa2207cb",
+            "_source": {
+                "title": "Merged Decoder Percent",
+                "visState": "{\"title\":\"Merged Decoder Percent\",\"type\":\"metrics\",\"params\":{\"id\":\"e0054f40-7b95-11eb-ab2e-ab1200471ef5\",\"type\":\"metric\",\"series\":[{\"id\":\"e0054f41-7b95-11eb-ab2e-ab1200471ef5\",\"color\":\"#68BC00\",\"split_mode\":\"everything\",\"metrics\":[{\"id\":\"c5c3e540-7b97-11eb-837a-ff64fa2207cb\",\"type\":\"filter_ratio\",\"numerator\":\"*Merged*\"}],\"seperate_axis\":0,\"axis_position\":\"right\",\"formatter\":\"percent\",\"chart_type\":\"line\",\"line_width\":1,\"point_size\":1,\"fill\":0.5,\"stacked\":\"none\",\"terms_field\":\"poller.packetmerge.merged.i_decoder\",\"terms_size\":\"2000\",\"label\":\"Merged Decoders\"}],\"time_field\":\"@timestamp\",\"index_pattern\":\"log-metric-poller-packetmerge-*\",\"interval\":\"2m\",\"axis_position\":\"left\",\"axis_formatter\":\"number\",\"show_legend\":1,\"background_color_rules\":[{\"id\":\"f55739d0-7b95-11eb-ab2e-ab1200471ef5\"}],\"filter\":\"annotation.general.device_type:\\\"SCORPION-X18-APP-J2K-8E2D\\\"\",\"ignore_global_filter\":1},\"aggs\":[],\"listeners\":{}}",
+                "uiStateJSON": "{}",
+                "description": "",
+                "version": 1,
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"query\":{\"query_string\":{\"query\":\"*\"}},\"filter\":[]}"
+                }
+            }
+        },
+        {
+            "_type": "visualization",
+            "_id": "51035ec0-7c2d-11eb-817e-4508ae011779",
+            "_source": {
+                "title": "Decoders Zero Rate",
+                "visState": "{\"title\":\"Decoders Zero Rate\",\"type\":\"metrics\",\"params\":{\"axis_formatter\":\"number\",\"axis_position\":\"left\",\"background_color_rules\":[{\"id\":\"f55739d0-7b95-11eb-ab2e-ab1200471ef5\"}],\"filter\":\"annotation.general.device_type:\\\"SCORPION-X18-APP-J2K-8E2D\\\"\",\"id\":\"e0054f40-7b95-11eb-ab2e-ab1200471ef5\",\"ignore_global_filter\":1,\"index_pattern\":\"log-metric-poller-packetmerge-*\",\"interval\":\"2m\",\"series\":[{\"axis_position\":\"right\",\"chart_type\":\"line\",\"color\":\"#68BC00\",\"fill\":0.5,\"formatter\":\"number\",\"id\":\"e0054f41-7b95-11eb-ab2e-ab1200471ef5\",\"label\":\"Decoders 0 Bit Rate\",\"line_width\":1,\"metrics\":[{\"field\":\"annotation.general.device_name.keyword\",\"id\":\"c37397f0-7c2c-11eb-817e-4508ae011779\",\"type\":\"cardinality\"},{\"function\":\"overall_sum\",\"id\":\"96287090-7c2c-11eb-817e-4508ae011779\",\"type\":\"series_agg\"}],\"point_size\":1,\"seperate_axis\":0,\"split_filters\":[{\"color\":\"#68BC00\",\"filter\":\"poller.packetmerge.merged.l_main_packet_rate:0\",\"id\":\"76b99090-7c2c-11eb-817e-4508ae011779\",\"label\":\"\"},{\"color\":\"#68BC00\",\"filter\":\"poller.packetmerge.merged.l_backup_packet_rate:0\",\"id\":\"8800a140-7c2c-11eb-817e-4508ae011779\",\"label\":\"\"}],\"split_mode\":\"filters\",\"stacked\":\"none\",\"terms_field\":\"poller.packetmerge.merged.i_decoder\",\"terms_size\":\"2000\"}],\"show_legend\":1,\"time_field\":\"@timestamp\",\"type\":\"metric\"},\"aggs\":[],\"listeners\":{}}",
+                "uiStateJSON": "{}",
+                "description": "",
+                "version": 1,
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"query\":{\"query_string\":{\"query\":\"*\"}},\"filter\":[]}"
+                }
+            }
+        },
+        {
+            "_type": "index-pattern",
+            "_id": "log-metric-poller-packetmerge-*",
+            "_source": {
+                "title": "log-metric-poller-packetmerge-*",
+                "timeFieldName": "@timestamp",
+                "notExpandable": true,
+                "fields": "[{\"name\":\"@UUID\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"@timestamp\",\"type\":\"date\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"@version\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"_id\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"_index\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false},{\"name\":\"_score\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":false,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"_source\",\"type\":\"_source\",\"count\":0,\"scripted\":false,\"searchable\":false,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"_type\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false},{\"name\":\"annotation.general.device_name\",\"type\":\"string\",\"count\":3,\"scripted\":false,\"searchable\":true,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"annotation.general.device_name.keyword\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"annotation.general.device_type\",\"type\":\"string\",\"count\":2,\"scripted\":false,\"searchable\":true,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"annotation.general.device_type.keyword\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"beat.hostname\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"beat.name\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"beat.version\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"beat.version.keyword\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"error\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"error.keyword\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"host\",\"type\":\"string\",\"count\":3,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metricset.host\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metricset.module\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metricset.name\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metricset.rtt\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"poller.packetmerge.merged.as_ids\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"poller.packetmerge.merged.i_decoder\",\"type\":\"number\",\"count\":3,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"poller.packetmerge.merged.l_backup_packet_drop\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"poller.packetmerge.merged.l_backup_packet_rate\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"poller.packetmerge.merged.l_hitless_packet_drop\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"poller.packetmerge.merged.l_hitless_packet_rate\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"poller.packetmerge.merged.l_main_packet_drop\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"poller.packetmerge.merged.l_main_packet_rate\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"poller.packetmerge.merged.s_link_select\",\"type\":\"string\",\"count\":3,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"poller.packetmerge.merged.s_playout_status\",\"type\":\"string\",\"count\":3,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"tags\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"type\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"Metrics\",\"type\":\"string\",\"count\":0,\"scripted\":true,\"script\":\"return 'annotation.general.device_name.keyword:\\\"' + doc['annotation.general.device_name.keyword'].value + '\\\" AND poller.packetmerge.merged.i_decoder:' + doc['poller.packetmerge.merged.i_decoder'].value\",\"lang\":\"painless\",\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false}]",
+                "fieldFormatMap": "{\"poller.packetmerge.merged.l_backup_packet_rate\":{\"id\":\"bits\"},\"poller.packetmerge.merged.l_hitless_packet_rate\":{\"id\":\"bits\"},\"poller.packetmerge.merged.l_main_packet_rate\":{\"id\":\"bits\"},\"Metrics\":{\"id\":\"url\",\"params\":{\"urlTemplate\":\"https://192.168.42.91/proxy/insite/kb-1/app/kibana#/dashboard/4d68f390-7c25-11eb-afe0-efa0019e034f?_g=(refreshInterval:(display:'5+seconds',pause:!f,section:1,value:5000),time:(from:now-12h,mode:quick,to:now))&_a=(description:'',filters:!(),options:(darkTheme:!f),panels:!((col:1,id:f69467c0-7c24-11eb-afe0-efa0019e034f,panelIndex:1,row:1,size_x:10,size_y:2,type:visualization),(col:1,id:'0b6821a0-7c25-11eb-afe0-efa0019e034f',panelIndex:2,row:3,size_x:10,size_y:2,type:visualization),(col:1,id:'1dbd9510-7c25-11eb-afe0-efa0019e034f',panelIndex:3,row:5,size_x:10,size_y:2,type:visualization),(col:11,id:'879364b0-7c25-11eb-afe0-efa0019e034f',panelIndex:4,row:1,size_x:2,size_y:2,type:visualization),(col:11,id:bca890d0-7c25-11eb-afe0-efa0019e034f,panelIndex:5,row:3,size_x:2,size_y:2,type:visualization),(col:11,id:ccda60f0-7c25-11eb-afe0-efa0019e034f,panelIndex:6,row:5,size_x:2,size_y:2,type:visualization),(col:1,id:a3072cd0-7c26-11eb-9d15-f94a7c1fd7af,panelIndex:7,row:7,size_x:10,size_y:3,type:visualization),(col:11,id:'6fcbfb60-7c27-11eb-bef0-8dd9f1e865e0',panelIndex:8,row:7,size_x:2,size_y:2,type:visualization)),query:(query_string:(analyze_wildcard:!t,query:'{{value}}')),timeRestore:!t,title:'MPPM+Stats',uiState:(),viewMode:view)\",\"labelTemplate\":\"Metrics\"}}}"
+            }
+        },
+        {
+            "_type": "dashboard",
+            "_id": "bd408d80-7b95-11eb-ab2e-ab1200471ef5",
+            "_source": {
+                "title": "Areana Decoder MPPM",
+                "hits": 0,
+                "description": "",
+                "panelsJSON": "[{\"col\":1,\"id\":\"d7329f00-7b93-11eb-ab2e-ab1200471ef5\",\"panelIndex\":1,\"row\":2,\"size_x\":12,\"size_y\":6,\"type\":\"visualization\"},{\"col\":4,\"id\":\"18bab720-7b97-11eb-ab2e-ab1200471ef5\",\"panelIndex\":3,\"row\":1,\"size_x\":3,\"size_y\":1,\"type\":\"visualization\"},{\"col\":7,\"id\":\"05a15770-7b97-11eb-ab2e-ab1200471ef5\",\"panelIndex\":4,\"row\":1,\"size_x\":3,\"size_y\":1,\"type\":\"visualization\"},{\"col\":1,\"id\":\"dada2660-7b97-11eb-837a-ff64fa2207cb\",\"panelIndex\":5,\"row\":1,\"size_x\":3,\"size_y\":1,\"type\":\"visualization\"},{\"col\":10,\"id\":\"51035ec0-7c2d-11eb-817e-4508ae011779\",\"panelIndex\":6,\"row\":1,\"size_x\":3,\"size_y\":1,\"type\":\"visualization\"}]",
+                "optionsJSON": "{\"darkTheme\":false}",
+                "uiStateJSON": "{\"P-1\":{\"spy\":{\"mode\":{\"fill\":false,\"name\":null}},\"vis\":{\"params\":{\"sort\":{\"columnIndex\":0,\"direction\":null}}}}}",
+                "version": 1,
+                "timeRestore": true,
+                "timeTo": "now",
+                "timeFrom": "now-3m",
+                "refreshInterval": {
+                    "display": "5 seconds",
+                    "pause": true,
+                    "section": 1,
+                    "value": 5000
+                },
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}}}],\"highlightAll\":true,\"version\":true}"
+                }
+            }
+        },
+        {
+            "_type": "visualization",
+            "_id": "f69467c0-7c24-11eb-afe0-efa0019e034f",
+            "_source": {
+                "title": "MPPM Decoder Main Input",
+                "visState": "{\"title\":\"MPPM Decoder Main Input\",\"type\":\"metrics\",\"params\":{\"axis_formatter\":\"number\",\"axis_position\":\"left\",\"background_color_rules\":[{\"id\":\"f55739d0-7b95-11eb-ab2e-ab1200471ef5\"}],\"filter\":\"\",\"id\":\"e0054f40-7b95-11eb-ab2e-ab1200471ef5\",\"ignore_global_filter\":0,\"index_pattern\":\"log-metric-poller-packetmerge-*\",\"interval\":\"3m\",\"series\":[{\"axis_position\":\"right\",\"chart_type\":\"line\",\"color\":\"#68BC00\",\"fill\":\"0\",\"formatter\":\"0,0.[0] bP\",\"id\":\"e0054f41-7b95-11eb-ab2e-ab1200471ef5\",\"label\":\"Rate\",\"line_width\":\"3\",\"metrics\":[{\"field\":\"poller.packetmerge.merged.l_main_packet_rate\",\"id\":\"c5c3e540-7b97-11eb-837a-ff64fa2207cb\",\"numerator\":\"*Merged*\",\"type\":\"avg\"}],\"point_size\":1,\"seperate_axis\":0,\"split_mode\":\"everything\",\"stacked\":\"none\",\"terms_field\":\"poller.packetmerge.merged.i_decoder\",\"terms_size\":\"2000\"},{\"id\":\"b07e0d90-7c24-11eb-afe0-efa0019e034f\",\"color\":\"rgba(244,78,59,1)\",\"split_mode\":\"everything\",\"metrics\":[{\"id\":\"b07e0d91-7c24-11eb-afe0-efa0019e034f\",\"type\":\"max\",\"field\":\"poller.packetmerge.merged.l_main_packet_drop\"},{\"unit\":\"1s\",\"id\":\"b67ec400-7c24-11eb-afe0-efa0019e034f\",\"type\":\"derivative\",\"field\":\"b07e0d91-7c24-11eb-afe0-efa0019e034f\"},{\"unit\":\"\",\"id\":\"ca383440-7c24-11eb-afe0-efa0019e034f\",\"type\":\"positive_only\",\"field\":\"b67ec400-7c24-11eb-afe0-efa0019e034f\"}],\"seperate_axis\":1,\"axis_position\":\"right\",\"formatter\":\"'0a'\",\"chart_type\":\"bar\",\"line_width\":1,\"point_size\":1,\"fill\":\"0.2\",\"stacked\":\"none\",\"label\":\"Packet Drop\"}],\"show_legend\":1,\"time_field\":\"@timestamp\",\"type\":\"timeseries\"},\"aggs\":[],\"listeners\":{}}",
+                "uiStateJSON": "{}",
+                "description": "",
+                "version": 1,
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"query\":{\"query_string\":{\"query\":\"*\"}},\"filter\":[]}"
+                }
+            }
+        },
+        {
+            "_type": "visualization",
+            "_id": "0b6821a0-7c25-11eb-afe0-efa0019e034f",
+            "_source": {
+                "title": "MPPM Decoder Backup Input",
+                "visState": "{\"title\":\"MPPM Decoder Backup Input\",\"type\":\"metrics\",\"params\":{\"axis_formatter\":\"number\",\"axis_position\":\"left\",\"background_color_rules\":[{\"id\":\"f55739d0-7b95-11eb-ab2e-ab1200471ef5\"}],\"filter\":\"\",\"id\":\"e0054f40-7b95-11eb-ab2e-ab1200471ef5\",\"ignore_global_filter\":0,\"index_pattern\":\"log-metric-poller-packetmerge-*\",\"interval\":\"3m\",\"series\":[{\"axis_position\":\"right\",\"chart_type\":\"line\",\"color\":\"rgba(252,220,0,1)\",\"fill\":\"0\",\"formatter\":\"0,0.[0] bP\",\"id\":\"e0054f41-7b95-11eb-ab2e-ab1200471ef5\",\"label\":\"Rate\",\"line_width\":\"3\",\"metrics\":[{\"field\":\"poller.packetmerge.merged.l_backup_packet_rate\",\"id\":\"c5c3e540-7b97-11eb-837a-ff64fa2207cb\",\"numerator\":\"*Merged*\",\"type\":\"avg\"}],\"point_size\":1,\"seperate_axis\":0,\"split_mode\":\"everything\",\"stacked\":\"none\",\"terms_field\":\"poller.packetmerge.merged.i_decoder\",\"terms_size\":\"2000\"},{\"id\":\"b07e0d90-7c24-11eb-afe0-efa0019e034f\",\"color\":\"rgba(244,78,59,1)\",\"split_mode\":\"everything\",\"metrics\":[{\"id\":\"b07e0d91-7c24-11eb-afe0-efa0019e034f\",\"type\":\"max\",\"field\":\"poller.packetmerge.merged.l_backup_packet_drop\"},{\"unit\":\"1s\",\"id\":\"b67ec400-7c24-11eb-afe0-efa0019e034f\",\"type\":\"derivative\",\"field\":\"b07e0d91-7c24-11eb-afe0-efa0019e034f\"},{\"unit\":\"\",\"id\":\"ca383440-7c24-11eb-afe0-efa0019e034f\",\"type\":\"positive_only\",\"field\":\"b67ec400-7c24-11eb-afe0-efa0019e034f\"}],\"seperate_axis\":1,\"axis_position\":\"right\",\"formatter\":\"'0a'\",\"chart_type\":\"bar\",\"line_width\":1,\"point_size\":1,\"fill\":\"0.2\",\"stacked\":\"none\",\"label\":\"Packet Drop\"}],\"show_legend\":1,\"time_field\":\"@timestamp\",\"type\":\"timeseries\"},\"aggs\":[],\"listeners\":{}}",
+                "uiStateJSON": "{}",
+                "description": "",
+                "version": 1,
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"query\":{\"query_string\":{\"query\":\"*\"}},\"filter\":[]}"
+                }
+            }
+        },
+        {
+            "_type": "visualization",
+            "_id": "1dbd9510-7c25-11eb-afe0-efa0019e034f",
+            "_source": {
+                "title": "MPPM Decoder Hitless Input",
+                "visState": "{\"title\":\"MPPM Decoder Hitless Input\",\"type\":\"metrics\",\"params\":{\"axis_formatter\":\"number\",\"axis_position\":\"left\",\"background_color_rules\":[{\"id\":\"f55739d0-7b95-11eb-ab2e-ab1200471ef5\"}],\"filter\":\"\",\"id\":\"e0054f40-7b95-11eb-ab2e-ab1200471ef5\",\"ignore_global_filter\":0,\"index_pattern\":\"log-metric-poller-packetmerge-*\",\"interval\":\"3m\",\"series\":[{\"axis_position\":\"right\",\"chart_type\":\"line\",\"color\":\"rgba(115,216,255,1)\",\"fill\":\"0\",\"formatter\":\"0,0.[0] bP\",\"id\":\"e0054f41-7b95-11eb-ab2e-ab1200471ef5\",\"label\":\"Rate\",\"line_width\":\"3\",\"metrics\":[{\"field\":\"poller.packetmerge.merged.l_hitless_packet_rate\",\"id\":\"c5c3e540-7b97-11eb-837a-ff64fa2207cb\",\"numerator\":\"*Merged*\",\"type\":\"avg\"}],\"point_size\":1,\"seperate_axis\":0,\"split_mode\":\"everything\",\"stacked\":\"none\",\"terms_field\":\"poller.packetmerge.merged.i_decoder\",\"terms_size\":\"2000\"},{\"id\":\"b07e0d90-7c24-11eb-afe0-efa0019e034f\",\"color\":\"rgba(244,78,59,1)\",\"split_mode\":\"everything\",\"metrics\":[{\"id\":\"b07e0d91-7c24-11eb-afe0-efa0019e034f\",\"type\":\"max\",\"field\":\"poller.packetmerge.merged.l_hitless_packet_drop\"},{\"unit\":\"1s\",\"id\":\"b67ec400-7c24-11eb-afe0-efa0019e034f\",\"type\":\"derivative\",\"field\":\"b07e0d91-7c24-11eb-afe0-efa0019e034f\"},{\"unit\":\"\",\"id\":\"ca383440-7c24-11eb-afe0-efa0019e034f\",\"type\":\"positive_only\",\"field\":\"b67ec400-7c24-11eb-afe0-efa0019e034f\"}],\"seperate_axis\":1,\"axis_position\":\"right\",\"formatter\":\"'0a'\",\"chart_type\":\"bar\",\"line_width\":1,\"point_size\":1,\"fill\":\"0.2\",\"stacked\":\"none\",\"label\":\"Packet Drop\"}],\"show_legend\":1,\"time_field\":\"@timestamp\",\"type\":\"timeseries\"},\"aggs\":[],\"listeners\":{}}",
+                "uiStateJSON": "{}",
+                "description": "",
+                "version": 1,
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"query\":{\"query_string\":{\"query\":\"*\"}},\"filter\":[]}"
+                }
+            }
+        },
+        {
+            "_type": "visualization",
+            "_id": "879364b0-7c25-11eb-afe0-efa0019e034f",
+            "_source": {
+                "title": "MPPM Decoder Main Input Stat",
+                "visState": "{\"title\":\"MPPM Decoder Main Input Stat\",\"type\":\"metrics\",\"params\":{\"axis_formatter\":\"number\",\"axis_position\":\"left\",\"background_color_rules\":[{\"id\":\"f55739d0-7b95-11eb-ab2e-ab1200471ef5\"}],\"filter\":\"\",\"id\":\"e0054f40-7b95-11eb-ab2e-ab1200471ef5\",\"ignore_global_filter\":0,\"index_pattern\":\"log-metric-poller-packetmerge-*\",\"interval\":\"3m\",\"series\":[{\"axis_position\":\"right\",\"chart_type\":\"line\",\"color\":\"#68BC00\",\"fill\":\"0\",\"formatter\":\"0,0.[0] bP\",\"id\":\"e0054f41-7b95-11eb-ab2e-ab1200471ef5\",\"label\":\"Rate\",\"line_width\":\"3\",\"metrics\":[{\"field\":\"poller.packetmerge.merged.l_main_packet_rate\",\"id\":\"c5c3e540-7b97-11eb-837a-ff64fa2207cb\",\"numerator\":\"*Merged*\",\"type\":\"avg\"}],\"point_size\":1,\"seperate_axis\":0,\"split_mode\":\"everything\",\"stacked\":\"none\",\"terms_field\":\"poller.packetmerge.merged.i_decoder\",\"terms_size\":\"2000\"},{\"id\":\"b07e0d90-7c24-11eb-afe0-efa0019e034f\",\"color\":\"rgba(15,20,25,1)\",\"split_mode\":\"everything\",\"metrics\":[{\"id\":\"b07e0d91-7c24-11eb-afe0-efa0019e034f\",\"type\":\"max\",\"field\":\"poller.packetmerge.merged.l_main_packet_drop\"},{\"unit\":\"1s\",\"id\":\"b67ec400-7c24-11eb-afe0-efa0019e034f\",\"type\":\"derivative\",\"field\":\"b07e0d91-7c24-11eb-afe0-efa0019e034f\"},{\"unit\":\"\",\"id\":\"ca383440-7c24-11eb-afe0-efa0019e034f\",\"type\":\"positive_only\",\"field\":\"b67ec400-7c24-11eb-afe0-efa0019e034f\"},{\"id\":\"6c07d960-7c25-11eb-afe0-efa0019e034f\",\"type\":\"series_agg\",\"function\":\"overall_sum\"}],\"seperate_axis\":0,\"axis_position\":\"right\",\"formatter\":\"'0a'\",\"chart_type\":\"bar\",\"line_width\":1,\"point_size\":1,\"fill\":0.5,\"stacked\":\"none\",\"label\":\"Total Packet Drop\"}],\"show_legend\":1,\"time_field\":\"@timestamp\",\"type\":\"metric\"},\"aggs\":[],\"listeners\":{}}",
+                "uiStateJSON": "{}",
+                "description": "",
+                "version": 1,
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"query\":{\"query_string\":{\"query\":\"*\"}},\"filter\":[]}"
+                }
+            }
+        },
+        {
+            "_type": "visualization",
+            "_id": "bca890d0-7c25-11eb-afe0-efa0019e034f",
+            "_source": {
+                "title": "MPPM Decoder Backup Input Stat",
+                "visState": "{\"title\":\"MPPM Decoder Backup Input Stat\",\"type\":\"metrics\",\"params\":{\"axis_formatter\":\"number\",\"axis_position\":\"left\",\"background_color_rules\":[{\"id\":\"f55739d0-7b95-11eb-ab2e-ab1200471ef5\"}],\"filter\":\"\",\"id\":\"e0054f40-7b95-11eb-ab2e-ab1200471ef5\",\"ignore_global_filter\":0,\"index_pattern\":\"log-metric-poller-packetmerge-*\",\"interval\":\"3m\",\"series\":[{\"axis_position\":\"right\",\"chart_type\":\"line\",\"color\":\"#68BC00\",\"fill\":\"0\",\"formatter\":\"0,0.[0] bP\",\"id\":\"e0054f41-7b95-11eb-ab2e-ab1200471ef5\",\"label\":\"Rate\",\"line_width\":\"3\",\"metrics\":[{\"field\":\"poller.packetmerge.merged.l_backup_packet_rate\",\"id\":\"c5c3e540-7b97-11eb-837a-ff64fa2207cb\",\"numerator\":\"*Merged*\",\"type\":\"avg\"}],\"point_size\":1,\"seperate_axis\":0,\"split_mode\":\"everything\",\"stacked\":\"none\",\"terms_field\":\"poller.packetmerge.merged.i_decoder\",\"terms_size\":\"2000\"},{\"id\":\"b07e0d90-7c24-11eb-afe0-efa0019e034f\",\"color\":\"rgba(15,20,25,1)\",\"split_mode\":\"everything\",\"metrics\":[{\"id\":\"b07e0d91-7c24-11eb-afe0-efa0019e034f\",\"type\":\"max\",\"field\":\"poller.packetmerge.merged.l_backup_packet_drop\"},{\"unit\":\"1s\",\"id\":\"b67ec400-7c24-11eb-afe0-efa0019e034f\",\"type\":\"derivative\",\"field\":\"b07e0d91-7c24-11eb-afe0-efa0019e034f\"},{\"unit\":\"\",\"id\":\"ca383440-7c24-11eb-afe0-efa0019e034f\",\"type\":\"positive_only\",\"field\":\"b67ec400-7c24-11eb-afe0-efa0019e034f\"},{\"id\":\"6c07d960-7c25-11eb-afe0-efa0019e034f\",\"type\":\"series_agg\",\"function\":\"overall_sum\"}],\"seperate_axis\":0,\"axis_position\":\"right\",\"formatter\":\"'0a'\",\"chart_type\":\"bar\",\"line_width\":1,\"point_size\":1,\"fill\":0.5,\"stacked\":\"none\",\"label\":\"Total Packet Drop\",\"value_template\":\"\"}],\"show_legend\":1,\"time_field\":\"@timestamp\",\"type\":\"metric\"},\"aggs\":[],\"listeners\":{}}",
+                "uiStateJSON": "{}",
+                "description": "",
+                "version": 1,
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"query\":{\"query_string\":{\"query\":\"*\"}},\"filter\":[]}"
+                }
+            }
+        },
+        {
+            "_type": "visualization",
+            "_id": "ccda60f0-7c25-11eb-afe0-efa0019e034f",
+            "_source": {
+                "title": "MPPM Decoder Hitless Input Stat",
+                "visState": "{\"title\":\"MPPM Decoder Hitless Input Stat\",\"type\":\"metrics\",\"params\":{\"axis_formatter\":\"number\",\"axis_position\":\"left\",\"background_color_rules\":[{\"id\":\"f55739d0-7b95-11eb-ab2e-ab1200471ef5\"}],\"filter\":\"\",\"id\":\"e0054f40-7b95-11eb-ab2e-ab1200471ef5\",\"ignore_global_filter\":0,\"index_pattern\":\"log-metric-poller-packetmerge-*\",\"interval\":\"3m\",\"series\":[{\"axis_position\":\"right\",\"chart_type\":\"line\",\"color\":\"#68BC00\",\"fill\":\"0\",\"formatter\":\"0,0.[0] bP\",\"id\":\"e0054f41-7b95-11eb-ab2e-ab1200471ef5\",\"label\":\"Rate\",\"line_width\":\"3\",\"metrics\":[{\"field\":\"poller.packetmerge.merged.l_hitless_packet_rate\",\"id\":\"c5c3e540-7b97-11eb-837a-ff64fa2207cb\",\"numerator\":\"*Merged*\",\"type\":\"avg\"}],\"point_size\":1,\"seperate_axis\":0,\"split_mode\":\"everything\",\"stacked\":\"none\",\"terms_field\":\"poller.packetmerge.merged.i_decoder\",\"terms_size\":\"2000\"},{\"id\":\"b07e0d90-7c24-11eb-afe0-efa0019e034f\",\"color\":\"rgba(15,20,25,1)\",\"split_mode\":\"everything\",\"metrics\":[{\"id\":\"b07e0d91-7c24-11eb-afe0-efa0019e034f\",\"type\":\"max\",\"field\":\"poller.packetmerge.merged.l_hitless_packet_drop\"},{\"unit\":\"1s\",\"id\":\"b67ec400-7c24-11eb-afe0-efa0019e034f\",\"type\":\"derivative\",\"field\":\"b07e0d91-7c24-11eb-afe0-efa0019e034f\"},{\"unit\":\"\",\"id\":\"ca383440-7c24-11eb-afe0-efa0019e034f\",\"type\":\"positive_only\",\"field\":\"b67ec400-7c24-11eb-afe0-efa0019e034f\"},{\"id\":\"6c07d960-7c25-11eb-afe0-efa0019e034f\",\"type\":\"series_agg\",\"function\":\"overall_sum\"}],\"seperate_axis\":0,\"axis_position\":\"right\",\"formatter\":\"'0a'\",\"chart_type\":\"bar\",\"line_width\":1,\"point_size\":1,\"fill\":0.5,\"stacked\":\"none\",\"label\":\"Total Packet Drop\",\"value_template\":\"\"}],\"show_legend\":1,\"time_field\":\"@timestamp\",\"type\":\"metric\"},\"aggs\":[],\"listeners\":{}}",
+                "uiStateJSON": "{}",
+                "description": "",
+                "version": 1,
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"query\":{\"query_string\":{\"query\":\"*\"}},\"filter\":[]}"
+                }
+            }
+        },
+        {
+            "_type": "visualization",
+            "_id": "a3072cd0-7c26-11eb-9d15-f94a7c1fd7af",
+            "_source": {
+                "title": "MPPM Decoder Playout Status",
+                "visState": "{\"title\":\"MPPM Decoder Playout Status\",\"type\":\"metrics\",\"params\":{\"axis_formatter\":\"number\",\"axis_position\":\"left\",\"background_color_rules\":[{\"id\":\"f55739d0-7b95-11eb-ab2e-ab1200471ef5\"}],\"filter\":\"!poller.packetmerge.merged.s_playout_status:Merged\",\"id\":\"e0054f40-7b95-11eb-ab2e-ab1200471ef5\",\"ignore_global_filter\":0,\"index_pattern\":\"log-metric-poller-packetmerge-*\",\"interval\":\"3m\",\"series\":[{\"axis_position\":\"right\",\"chart_type\":\"bar\",\"color\":\"rgba(115,216,255,1)\",\"fill\":\"0\",\"formatter\":\"number\",\"id\":\"e0054f41-7b95-11eb-ab2e-ab1200471ef5\",\"label\":\"Rate\",\"line_width\":\"3\",\"metrics\":[{\"field\":\"poller.packetmerge.merged.l_main_packet_rate\",\"id\":\"c5c3e540-7b97-11eb-837a-ff64fa2207cb\",\"numerator\":\"*Merged*\",\"type\":\"count\"}],\"point_size\":1,\"seperate_axis\":0,\"split_mode\":\"terms\",\"stacked\":\"stacked\",\"terms_field\":\"poller.packetmerge.merged.s_playout_status\",\"terms_size\":\"2000\"}],\"show_legend\":1,\"time_field\":\"@timestamp\",\"type\":\"timeseries\"},\"aggs\":[],\"listeners\":{}}",
+                "uiStateJSON": "{}",
+                "description": "",
+                "version": 1,
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"query\":{\"query_string\":{\"query\":\"*\"}},\"filter\":[]}"
+                }
+            }
+        },
+        {
+            "_type": "visualization",
+            "_id": "6fcbfb60-7c27-11eb-bef0-8dd9f1e865e0",
+            "_source": {
+                "title": "MPPM Playout Status",
+                "visState": "{\"title\":\"MPPM Playout Status\",\"type\":\"metric\",\"params\":{\"addTooltip\":true,\"addLegend\":false,\"type\":\"gauge\",\"gauge\":{\"verticalSplit\":false,\"autoExtend\":false,\"percentageMode\":false,\"gaugeType\":\"Metric\",\"gaugeStyle\":\"Full\",\"backStyle\":\"Full\",\"orientation\":\"vertical\",\"colorSchema\":\"Green to Red\",\"gaugeColorMode\":\"None\",\"useRange\":false,\"colorsRange\":[{\"from\":0,\"to\":100}],\"invertColors\":false,\"labels\":{\"show\":false,\"color\":\"black\"},\"scale\":{\"show\":false,\"labels\":false,\"color\":\"#333\",\"width\":2},\"type\":\"simple\",\"style\":{\"fontSize\":\"40\",\"bgFill\":\"#000\",\"bgColor\":false,\"labelColor\":false,\"subText\":\"\"}}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"top_hits\",\"schema\":\"metric\",\"params\":{\"field\":\"poller.packetmerge.merged.s_playout_status\",\"aggregate\":\"concat\",\"size\":1,\"sortField\":\"@timestamp\",\"sortOrder\":\"desc\",\"customLabel\":\"Active Playout Status\"}}],\"listeners\":{}}",
+                "uiStateJSON": "{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}}",
+                "description": "",
+                "version": 1,
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"index\":\"log-metric-poller-packetmerge-*\",\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}},\"filter\":[]}"
+                }
+            }
+        },
+        {
+            "_type": "dashboard",
+            "_id": "4d68f390-7c25-11eb-afe0-efa0019e034f",
+            "_source": {
+                "title": "MPPM Stats",
+                "hits": 0,
+                "description": "",
+                "panelsJSON": "[{\"col\":1,\"id\":\"f69467c0-7c24-11eb-afe0-efa0019e034f\",\"panelIndex\":1,\"row\":1,\"size_x\":10,\"size_y\":2,\"type\":\"visualization\"},{\"col\":1,\"id\":\"0b6821a0-7c25-11eb-afe0-efa0019e034f\",\"panelIndex\":2,\"row\":3,\"size_x\":10,\"size_y\":2,\"type\":\"visualization\"},{\"col\":1,\"id\":\"1dbd9510-7c25-11eb-afe0-efa0019e034f\",\"panelIndex\":3,\"row\":5,\"size_x\":10,\"size_y\":2,\"type\":\"visualization\"},{\"col\":11,\"id\":\"879364b0-7c25-11eb-afe0-efa0019e034f\",\"panelIndex\":4,\"row\":1,\"size_x\":2,\"size_y\":2,\"type\":\"visualization\"},{\"col\":11,\"id\":\"bca890d0-7c25-11eb-afe0-efa0019e034f\",\"panelIndex\":5,\"row\":3,\"size_x\":2,\"size_y\":2,\"type\":\"visualization\"},{\"col\":11,\"id\":\"ccda60f0-7c25-11eb-afe0-efa0019e034f\",\"panelIndex\":6,\"row\":5,\"size_x\":2,\"size_y\":2,\"type\":\"visualization\"},{\"col\":1,\"id\":\"a3072cd0-7c26-11eb-9d15-f94a7c1fd7af\",\"panelIndex\":7,\"row\":7,\"size_x\":10,\"size_y\":3,\"type\":\"visualization\"},{\"col\":11,\"id\":\"6fcbfb60-7c27-11eb-bef0-8dd9f1e865e0\",\"panelIndex\":8,\"row\":7,\"size_x\":2,\"size_y\":2,\"type\":\"visualization\"}]",
+                "optionsJSON": "{\"darkTheme\":false}",
+                "uiStateJSON": "{\"P-8\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}}}",
+                "version": 1,
+                "timeRestore": true,
+                "timeTo": "now",
+                "timeFrom": "now-12h",
+                "refreshInterval": {
+                    "display": "5 seconds",
+                    "pause": false,
+                    "section": 1,
+                    "value": 5000
+                },
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}}}],\"highlightAll\":true,\"version\":true}"
+                }
+            }
+        }
+    ],
+    "id": "dd0c5de1-6b20-419a-84c5-c9066cec9b89"
+}
