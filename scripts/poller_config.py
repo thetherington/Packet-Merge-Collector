@@ -15,7 +15,15 @@ class Plugin(InsitePlugin):
 
         except Exception:
 
-            params = {"hosts": hosts, "decoders": [1, 2, 3, 4, 5, 6, 7, 8, 9]}
+            params = {
+                "hosts": hosts,
+                "decoders": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                "magnum": {
+                    "insite": "172.16.205.203",
+                    "cluster_ip": "192.168.0.250",
+                    "device_types": ["SCORPION-X18-APP-J2K-8E2D", "570J2K-U9D"],
+                },
+            }
 
             self.collector = PacketMergeCollector(**params)
 

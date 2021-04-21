@@ -28,7 +28,15 @@ class MagnumCache:
 
         self.edge_dict = self.catalog_cache()
 
-        print(json.dumps(self.edge_dict, indent=1))
+        # print(json.dumps(self.edge_dict, indent=1))
+
+    def return_mnemonics(self, host, decoder):
+
+        try:
+            return self.edge_dict[host]["mnemonics"][decoder]
+
+        except Exception:
+            return {}
 
     def config_fetch(self):
 
@@ -70,13 +78,9 @@ class MagnumCache:
                             {"s_control_2_address": device["control-2-address"]["host"]}
                         )
 
-                    for count, stream in enumerate(device["streams"]):
+                    for count, stream in enumerate(device["streams"], 1):
 
-                        if (
-                            stream["general"]["direction"] == "out"
-                            and stream["general"]["source-type"] == "VIDEO"
-                            and "mnemonics" in stream.keys()
-                        ):
+                        if stream["general"]["direction"] == "out" and "mnemonics" in stream.keys():
 
                             mnemonics_template = {count: {}}
 
@@ -104,6 +108,7 @@ class PacketMergeCollector:
         self.decoders = []
         self.hosts = []
         self.proto = "http"
+        self.magnum = None
 
         self.link_select = {"id": "361.<replace>@i", "type": "integer", "name": "link_select"}
         self.playout_status = {"id": "364.<replace>@i", "type": "integer", "name": "playout_status"}
@@ -159,6 +164,9 @@ class PacketMergeCollector:
 
             if "proto" in key and value:
                 self.proto = value
+
+            if "magnum" in key and value:
+                self.magnum = MagnumCache(**value)
 
         for decode in self.decoders:
 
@@ -226,6 +234,7 @@ class PacketMergeCollector:
         results = self.fetch(host)
 
         # from response import params
+
         # results = params
 
         try:
@@ -267,6 +276,15 @@ class PacketMergeCollector:
                     decoders[_instance].update({result["name"]: result["value"]})
                     decoders[_instance]["as_ids"].append(result["id"])
 
+            # if magnum lookup is enable, iterate through each decoder
+            # update the decoder definition with mnemonics.
+            # function return_mnemonics returns {} if lookup fails.
+            if self.magnum:
+
+                for decoder, params in decoders.items():
+
+                    params.update(self.magnum.return_mnemonics(host, decoder))
+
             collection.update(host_decoders)
 
         except Exception:
@@ -292,29 +310,29 @@ class PacketMergeCollector:
 
 def main():
 
-    params = {"hosts": ["192.168.0.16"], "decoders": [1, 2, 3, 4, 5, 6, 7, 8, 9]}
-
-    # collector = PacketMergeCollector(**params)
-
-    # documents = []
-
-    # for host, decoders in collector.collect.items():
-
-    #     for _, params in decoders.items():
-
-    #         document = {"fields": params, "host": host, "name": "merged"}
-
-    #         documents.append(document)
-
-    # print(json.dumps(documents, indent=1))
-
-    params_magnum = {
-        "insite": "172.16.205.203",
-        "cluster_ip": "192.168.0.250",
-        "device_types": ["SCORPION-X18-APP-J2K-8E2D"],
+    params = {
+        "hosts": ["192.168.0.16"],
+        "decoders": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        "magnum": {
+            "insite": "172.16.205.203",
+            "cluster_ip": "192.168.0.250",
+            "device_types": ["SCORPION-X18-APP-J2K-8E2D", "570J2K-U9D"],
+        },
     }
 
-    magnum = MagnumCache(**params_magnum)
+    collector = PacketMergeCollector(**params)
+
+    documents = []
+
+    for host, decoders in collector.collect.items():
+
+        for _, params in decoders.items():
+
+            document = {"fields": params, "host": host, "name": "merged"}
+
+            documents.append(document)
+
+    print(json.dumps(documents, indent=1))
 
 
 if __name__ == "__main__":
