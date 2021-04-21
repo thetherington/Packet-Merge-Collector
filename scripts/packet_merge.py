@@ -9,6 +9,95 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 requests.packages.urllib3.disable_warnings()
 
 
+class MagnumCache:
+    def __init__(self, **kwargs):
+
+        self.nature = "mag-1"
+        self.cluster_ip = None
+        self.insite = None
+        self.device_types = []
+
+        for key, value in kwargs.items():
+
+            if value:
+                setattr(self, key, value)
+
+        self.cache_url = "http://{}/proxy/insite/{}/api/-/model/magnum/{}".format(
+            self.insite, self.nature, self.cluster_ip
+        )
+
+        self.edge_dict = self.catalog_cache()
+
+        print(json.dumps(self.edge_dict, indent=1))
+
+    def config_fetch(self):
+
+        try:
+
+            response = requests.get(self.cache_url, verify=False, timeout=30.0)
+
+            return json.loads(response.text)
+
+        except Exception as e:
+            print(e)
+
+        return None
+
+    def catalog_cache(self):
+
+        edge_dict = {}
+
+        config = self.config_fetch()
+
+        if config:
+
+            for device in config["magnum"]["magnum-controlled-devices"]:
+
+                if device["device"] in self.device_types:
+
+                    edge_template = {
+                        "s_device_name": device["device-name"],
+                        "s_device": device["device"],
+                        "s_device_size": device["device-size"],
+                        "s_device_type": device["device-type"],
+                        "s_control_1_address": device["control-1-address"]["host"],
+                        "mnemonics": {},
+                    }
+
+                    if "control-2-address" in device.keys():
+
+                        edge_template.update(
+                            {"s_control_2_address": device["control-2-address"]["host"]}
+                        )
+
+                    for count, stream in enumerate(device["streams"]):
+
+                        if (
+                            stream["general"]["direction"] == "out"
+                            and stream["general"]["source-type"] == "VIDEO"
+                            and "mnemonics" in stream.keys()
+                        ):
+
+                            mnemonics_template = {count: {}}
+
+                            for mnemonic in stream["mnemonics"]:
+
+                                mnemonics_template[count].update(
+                                    {
+                                        "s_"
+                                        + mnemonic["interface"]
+                                        .lower()
+                                        .replace(" ", "_"): mnemonic["mnemonic"]
+                                    }
+                                )
+
+                            edge_template["mnemonics"].update(mnemonics_template)
+
+                    edge_dict.update({edge_template["s_control_1_address"]: edge_template})
+
+        return edge_dict
+
+
 class PacketMergeCollector:
     def __init__(self, **kwargs):
 
@@ -180,7 +269,7 @@ class PacketMergeCollector:
 
             collection.update(host_decoders)
 
-        except Exception as e:
+        except Exception:
             pass
 
     @property
@@ -205,19 +294,27 @@ def main():
 
     params = {"hosts": ["192.168.0.16"], "decoders": [1, 2, 3, 4, 5, 6, 7, 8, 9]}
 
-    collector = PacketMergeCollector(**params)
+    # collector = PacketMergeCollector(**params)
 
-    documents = []
+    # documents = []
 
-    for host, decoders in collector.collect.items():
+    # for host, decoders in collector.collect.items():
 
-        for _, params in decoders.items():
+    #     for _, params in decoders.items():
 
-            document = {"fields": params, "host": host, "name": "merged"}
+    #         document = {"fields": params, "host": host, "name": "merged"}
 
-            documents.append(document)
+    #         documents.append(document)
 
-    print(json.dumps(documents, indent=1))
+    # print(json.dumps(documents, indent=1))
+
+    params_magnum = {
+        "insite": "172.16.205.203",
+        "cluster_ip": "192.168.0.250",
+        "device_types": ["SCORPION-X18-APP-J2K-8E2D"],
+    }
+
+    magnum = MagnumCache(**params_magnum)
 
 
 if __name__ == "__main__":
