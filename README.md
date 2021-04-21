@@ -9,6 +9,7 @@ The data collection module has the below distinct abilities and features:
 3. Collects from multiple decoders for a device at the same time.
 4. Multi-threaded for multiple devices for non blocking capability.
 5. Texutal status values for easy use with the Intelligence notifications.
+6. Supports auto lookup annotations of magnum destination label mnemonics.
 
 ## Minimum Requirements:
 
@@ -41,10 +42,26 @@ To configure a poller to use the module start a new python poller configuration 
 
 8. Locate the below section of the script for custom modifcations:
    ```
-        params = {"hosts": hosts, "decoders": [1, 2, 3, 4, 5, 6, 7, 8, 9]}
+      params = {
+            "hosts": hosts,
+            "decoders": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "magnum": {
+               "insite": "172.16.205.203",
+               "cluster_ip": "192.168.0.250",
+               "device_types": ["SCORPION-X18-APP-J2K-8E2D", "570J2K-U9D"],
+            },
+      }
    ```
    
    Update the decoder list with the number of decoders the device has or uses.
+   
+   If there's a need to annotate the decoder collection with the magnum destination mnemonics, then update the following in the __magnum__ parameter object:
+
+   - __insite__ - ip address of the insite server.
+   - __cluster_ip__ - the cluster ip address of the magnum server.
+   - __device_types__ - a list of devices to cache the mnemonic label collection (less is better).
+
+   If there's no need for the magnum destination mnemonics lookup, then you can comment out the __magnum__ parameter options.
 
 9.  Save changes, then restart the poller program.
 
@@ -78,7 +95,9 @@ Below is the sample json file created:
    "l_backup_packet_drop": 1363,
    "l_backup_packet_rate": 250757000,
    "l_hitless_packet_drop": 631,
-   "l_hitless_packet_rate": 250757000
+   "l_hitless_packet_rate": 250757000,
+   "s_global": "G2-DEC17",
+   "s_description": "DEC-47A11-RX-37"
   },
   "host": "192.168.0.16",
   "name": "merged"
