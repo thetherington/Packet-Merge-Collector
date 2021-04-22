@@ -16,7 +16,7 @@ class Plugin(InsitePlugin):
         except Exception:
 
             params = {
-                "hosts": hosts,
+                "hosts": hosts,  # "auto", - to auto find hosts by magnum config,
                 "decoders": [1, 2, 3, 4, 5, 6, 7, 8, 9],
                 "magnum": {
                     "insite": "172.16.205.203",

@@ -10,6 +10,7 @@ The data collection module has the below distinct abilities and features:
 4. Multi-threaded for multiple devices for non blocking capability.
 5. Texutal status values for easy use with the Intelligence notifications.
 6. Supports auto lookup annotations of magnum destination label mnemonics.
+7. Supports auto host lookup from the magnum configuartion.
 
 ## Minimum Requirements:
 
@@ -43,7 +44,7 @@ To configure a poller to use the module start a new python poller configuration 
 8. Locate the below section of the script for custom modifcations:
    ```
       params = {
-            "hosts": hosts,
+            "hosts": hosts,  # "auto", - to auto find hosts by magnum config
             "decoders": [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "magnum": {
                "insite": "172.16.205.203",
@@ -60,6 +61,10 @@ To configure a poller to use the module start a new python poller configuration 
    - __insite__ - ip address of the insite server.
    - __cluster_ip__ - the cluster ip address of the magnum server.
    - __device_types__ - a list of devices to cache the mnemonic label collection (less is better).
+
+   The script module can also support auto lookup of IPG IP addresses -if the magnum configuration is provided. Configure the __hosts__ parameter to the value __"auto"__ for this to be enabled. 
+   
+   __NOTE: It's important that the correct decoder list is supported for all device_types in the magnum parameter if using auto host lookup.__  If there are different decoder counts for different device types, then seperate the devices into different inSITE poller configurations.
 
    If there's no need for the magnum destination mnemonics lookup, then you can comment out the __magnum__ parameter options.
 

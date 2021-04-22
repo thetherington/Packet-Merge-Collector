@@ -22,9 +22,7 @@ class MagnumCache:
             if value:
                 setattr(self, key, value)
 
-        self.cache_url = "http://{}/proxy/insite/{}/api/-/model/magnum/{}".format(
-            self.insite, self.nature, self.cluster_ip
-        )
+        self.cache_url = "http://{}/proxy/insite/{}/api/-/model/magnum/{}".format(self.insite, self.nature, self.cluster_ip)
 
         self.edge_dict = self.catalog_cache()
 
@@ -37,6 +35,14 @@ class MagnumCache:
 
         except Exception:
             return {}
+
+    def return_hosts(self):
+
+        try:
+            return [host for host in self.edge_dict if host != "127.0.0.1"]
+
+        except Exception:
+            return []
 
     def config_fetch(self):
 
@@ -74,9 +80,7 @@ class MagnumCache:
 
                     if "control-2-address" in device.keys():
 
-                        edge_template.update(
-                            {"s_control_2_address": device["control-2-address"]["host"]}
-                        )
+                        edge_template.update({"s_control_2_address": device["control-2-address"]["host"]})
 
                     for count, stream in enumerate(device["streams"], 1):
 
@@ -87,12 +91,7 @@ class MagnumCache:
                             for mnemonic in stream["mnemonics"]:
 
                                 mnemonics_template[count].update(
-                                    {
-                                        "s_"
-                                        + mnemonic["interface"]
-                                        .lower()
-                                        .replace(" ", "_"): mnemonic["mnemonic"]
-                                    }
+                                    {"s_" + mnemonic["interface"].lower().replace(" ", "_"): mnemonic["mnemonic"]}
                                 )
 
                             edge_template["mnemonics"].update(mnemonics_template)
@@ -157,7 +156,12 @@ class PacketMergeCollector:
         for key, value in kwargs.items():
 
             if "hosts" in key and value:
-                self.hosts.extend(value)
+
+                if isinstance(value, list):
+                    self.hosts.extend(value)
+
+                else:
+                    self.hosts = value
 
             if "decoders" in key and value:
                 self.decoders.extend(value)
@@ -167,6 +171,10 @@ class PacketMergeCollector:
 
             if "magnum" in key and value:
                 self.magnum = MagnumCache(**value)
+
+        if isinstance(self.hosts, str) and self.magnum:
+
+            self.hosts = self.magnum.return_hosts()
 
         for decode in self.decoders:
 
@@ -195,7 +203,9 @@ class PacketMergeCollector:
 
                 ## get the session ID from accessing the login.php site
                 resp = session.get(
-                    "%s://%s/login.php" % (self.proto, host), verify=False, timeout=15.0,
+                    "%s://%s/login.php" % (self.proto, host),
+                    verify=False,
+                    timeout=15.0,
                 )
 
                 session_id = resp.headers["Set-Cookie"].split(";")[0]
@@ -215,7 +225,11 @@ class PacketMergeCollector:
                 }
 
                 response = session.post(
-                    url, headers=headers, data=json.dumps(payload), verify=False, timeout=15.0,
+                    url,
+                    headers=headers,
+                    data=json.dumps(payload),
+                    verify=False,
+                    timeout=15.0,
                 )
 
                 return json.loads(response.text)
@@ -234,8 +248,7 @@ class PacketMergeCollector:
         results = self.fetch(host)
 
         # from response import params
-
-        # results = params
+        # results = copy.deepcopy(params)
 
         try:
 
@@ -287,8 +300,8 @@ class PacketMergeCollector:
 
             collection.update(host_decoders)
 
-        except Exception:
-            pass
+        except Exception as e:
+            print(host, e)
 
     @property
     def collect(self):
@@ -296,7 +309,14 @@ class PacketMergeCollector:
         collection = {}
 
         threads = [
-            Thread(target=self.parse_results, args=(host, collection,)) for host in self.hosts
+            Thread(
+                target=self.parse_results,
+                args=(
+                    host,
+                    collection,
+                ),
+            )
+            for host in self.hosts
         ]
 
         for x in threads:
@@ -311,7 +331,7 @@ class PacketMergeCollector:
 def main():
 
     params = {
-        "hosts": ["192.168.0.16"],
+        "hosts": ["192.168.0.16"],  # "auto", - to auto find hosts by magnum config,
         "decoders": [1, 2, 3, 4, 5, 6, 7, 8, 9],
         "magnum": {
             "insite": "172.16.205.203",
