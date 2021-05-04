@@ -16,35 +16,35 @@ class PacketMergeCollector:
         self.hosts = []
         self.proto = "http"
 
-        self.link_select = {"id": "361.<replace>@i", "type": "integer", "name": "link_select"}
-        self.playout_status = {"id": "364.<replace>@i", "type": "integer", "name": "playout_status"}
+        self.link_select = {"id": "221.<replace>@i", "type": "integer", "name": "link_select"}
+        self.playout_status = {"id": "224.<replace>@i", "type": "integer", "name": "playout_status"}
         self.main_drop = {
-            "id": "301.<replace>.0@i",
+            "id": "801.<replace>.0@i",
             "type": "integer",
             "name": "l_main_packet_drop",
         }
         self.main_rate = {
-            "id": "302.<replace>.0@i",
+            "id": "800.<replace>.0@i",
             "type": "integer",
             "name": "l_main_packet_rate",
         }
         self.backup_drop = {
-            "id": "301.<replace>.1@i",
+            "id": "801.<replace>.1@i",
             "type": "integer",
             "name": "l_backup_packet_drop",
         }
         self.backup_rate = {
-            "id": "302.<replace>.1@i",
+            "id": "800.<replace>.1@i",
             "type": "integer",
             "name": "l_backup_packet_rate",
         }
         self.hitless_drop = {
-            "id": "301.<replace>.2@i",
+            "id": "801.<replace>.2@i",
             "type": "integer",
             "name": "l_hitless_packet_drop",
         }
         self.hitless_rate = {
-            "id": "302.<replace>.2@i",
+            "id": "800.<replace>.2@i",
             "type": "integer",
             "name": "l_hitless_packet_rate",
         }
@@ -63,7 +63,9 @@ class PacketMergeCollector:
         for key, value in kwargs.items():
 
             if "hosts" in key and value:
+
                 self.hosts.extend(value)
+                self.hosts_decoders_store = {host: {} for host in self.hosts}
 
             if "decoders" in key and value:
                 self.decoders.extend(value)
@@ -98,7 +100,9 @@ class PacketMergeCollector:
 
                 ## get the session ID from accessing the login.php site
                 resp = session.get(
-                    "%s://%s/login.php" % (self.proto, host), verify=False, timeout=15.0,
+                    "%s://%s/login.php" % (self.proto, host),
+                    verify=False,
+                    timeout=15.0,
                 )
 
                 session_id = resp.headers["Set-Cookie"].split(";")[0]
@@ -118,7 +122,11 @@ class PacketMergeCollector:
                 }
 
                 response = session.post(
-                    url, headers=headers, data=json.dumps(payload), verify=False, timeout=15.0,
+                    url,
+                    headers=headers,
+                    data=json.dumps(payload),
+                    verify=False,
+                    timeout=15.0,
                 )
 
                 return json.loads(response.text)
@@ -136,8 +144,11 @@ class PacketMergeCollector:
 
         results = self.fetch(host)
 
-        # from response import params
-        # results = params
+        # import response
+        # from importlib import reload
+
+        # reload(response)
+        # results = copy.deepcopy(response.params)
 
         try:
 
@@ -178,10 +189,33 @@ class PacketMergeCollector:
                     decoders[_instance].update({result["name"]: result["value"]})
                     decoders[_instance]["as_ids"].append(result["id"])
 
+            decoders_store = self.hosts_decoders_store[host]
+
+            for decode_num, params in decoders.items():
+
+                if decode_num in decoders_store.keys():
+
+                    params.update(
+                        {
+                            "l_main_packet_drop_delta": params["l_main_packet_drop"]
+                            - decoders_store[decode_num]["l_main_packet_drop"],
+                            "l_backup_packet_drop_delta": params["l_backup_packet_drop"]
+                            - decoders_store[decode_num]["l_backup_packet_drop"],
+                            "l_hitless_packet_drop_delta": params["l_hitless_packet_drop"]
+                            - decoders_store[decode_num]["l_hitless_packet_drop"],
+                        }
+                    )
+
+                    decoders_store[decode_num].update(params)
+
+                else:
+
+                    decoders_store.update({decode_num: params})
+
             collection.update(host_decoders)
 
         except Exception as e:
-            pass
+            print(e)
 
     @property
     def collect(self):
@@ -189,7 +223,14 @@ class PacketMergeCollector:
         collection = {}
 
         threads = [
-            Thread(target=self.parse_results, args=(host, collection,)) for host in self.hosts
+            Thread(
+                target=self.parse_results,
+                args=(
+                    host,
+                    collection,
+                ),
+            )
+            for host in self.hosts
         ]
 
         for x in threads:
@@ -207,17 +248,23 @@ def main():
 
     collector = PacketMergeCollector(**params)
 
-    documents = []
+    inputQuit = False
 
-    for host, decoders in collector.collect.items():
+    while inputQuit is not "q":
 
-        for _, params in decoders.items():
+        documents = []
 
-            document = {"fields": params, "host": host, "name": "merged"}
+        for host, decoders in collector.collect.items():
 
-            documents.append(document)
+            for _, params in decoders.items():
 
-    print(json.dumps(documents, indent=1))
+                document = {"fields": params, "host": host, "name": "merged"}
+
+                documents.append(document)
+
+        print(json.dumps(documents, indent=1))
+
+        inputQuit = input("\nType q to quit or just hit enter: ")
 
 
 if __name__ == "__main__":
