@@ -195,16 +195,12 @@ class PacketMergeCollector:
 
                 if decode_num in decoders_store.keys():
 
-                    params.update(
-                        {
-                            "l_main_packet_drop_delta": params["l_main_packet_drop"]
-                            - decoders_store[decode_num]["l_main_packet_drop"],
-                            "l_backup_packet_drop_delta": params["l_backup_packet_drop"]
-                            - decoders_store[decode_num]["l_backup_packet_drop"],
-                            "l_hitless_packet_drop_delta": params["l_hitless_packet_drop"]
-                            - decoders_store[decode_num]["l_hitless_packet_drop"],
-                        }
-                    )
+                    for key in ["l_main_packet_drop", "l_backup_packet_drop", "l_hitless_packet_drop"]:
+
+                        x = params[key]
+                        y = decoders_store[decode_num][key]
+
+                        params.update({"{}_delta".format(key): x - y if x > y else 0})
 
                     decoders_store[decode_num].update(params)
 
